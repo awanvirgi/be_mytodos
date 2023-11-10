@@ -1,6 +1,8 @@
 const express = require("express")
+const tokenVerify = require("../middleware/auth")
 const route = express.Router()
 const userRoutes = require("./auth-routes")
+const todoRoutes = require("./todo-routes")
 
 route.get("/",(req,res)=>{
     res.json({
@@ -8,4 +10,5 @@ route.get("/",(req,res)=>{
     })
 })
 route.use("/users",userRoutes)
+route.use("/todos",tokenVerify,todoRoutes)
 module.exports = route

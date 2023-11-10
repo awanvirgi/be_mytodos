@@ -22,7 +22,7 @@ module.exports = {
     loginUser: async (req, res) => {
         try {
             const data = req.body
-            const dataUser = await User.findOne({ email: data.email })
+            const dataUser = await User.findOne({ where:{email: data.email} })
             if (!dataUser) throw new Error("User Blom Terdaftar")
             if (bcrypt.compareSync(data.password, dataUser.password)) {
                 const token = jwt.sign({ id: dataUser.id, email: dataUser.email }, process.env.TOKEN_KEY)
