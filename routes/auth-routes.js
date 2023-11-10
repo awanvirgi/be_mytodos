@@ -1,5 +1,5 @@
 const express = require("express")
-const { registUser, loginUser } = require("../controllers/user-controller")
+const { registUser, loginUser } = require("../controllers/auth-controller")
 const route = express.Router()
 
 route.post("/regist",registUser)
