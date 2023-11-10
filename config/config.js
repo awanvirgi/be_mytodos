@@ -1,9 +1,11 @@
+require("dotenv").config
+
 module.exports = {
   "development": {
-    "username": "freedb_virgiawan",
-    "password": "FeJ?f4Aj8qK&YsZ",
-    "database": "freedb_mytodos",
-    "host": "sql.freedb.tech",
+    "username": process.env.DB_USER,
+    "password": process.env.DB_USER_PASSWORD,
+    "database": process.env.DATABASE,
+    "host": process.env.DB_URL,
     "dialect": "mysql"
   },
   "test": {
