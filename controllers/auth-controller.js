@@ -10,9 +10,9 @@ module.exports = {
 
             const dataUser = await User.findOne({ email: data.email })
             if (dataUser)
-            return res.status(409).json({
-                message:"Alamat Email Telah Terdaftar, Gunakan email lain"
-            })
+                return res.status(409).json({
+                    message: "Alamat Email Telah Terdaftar, Gunakan email lain"
+                })
 
             const hashPassword = bcrypt.hashSync(data.password, 10)
             data.password = hashPassword
@@ -24,37 +24,39 @@ module.exports = {
 
         } catch (err) {
             console.error(err);
-            res.status(500).json({message:"Terjadi Kesalahan Internal pada server"})
+            res.status(500).json({ message: "Terjadi Kesalahan Internal pada server" })
         }
     },
     loginUser: async (req, res) => {
         try {
             const data = req.body
-
-            const dataUser = await User.findOne({ where:{email: data.email} })
-            if (dataUser)
-            return res.status(401).json({
-                message:"Alamat Email belum terdaftar, Silahkan Lakukan Registrasi terlebih daulu"
-            })
+            console.log(data)
+            const dataUser = await User.findOne({ where: { email: data.email } })
+            if (!dataUser)
+                return res.status(401).json({
+                    message: "Alamat Email belum terdaftar, Silahkan Lakukan Registrasi terlebih dahulu"
+                })
 
             if (bcrypt.compareSync(data.password, dataUser.password)) {
-                const token = jwt.sign({ 
-                    id: dataUser.id, email: dataUser.email 
+                const token = jwt.sign({
+                    id: dataUser.id, email: dataUser.email
                 }, process.env.TOKEN_KEY)
                 res.status(200).json({
                     message: "Berhasil Terlogin",
-                    user: dataUser.id,
-                    token: token
+                    data: {
+                        user: dataUser.id,
+                        token: token
+                    }
                 })
                 return
             }
             return res.status(401).json({
-                message:"Password yang digunakan Salah"
+                message: "Password yang digunakan Salah"
             })
         } catch (err) {
             console.error(err);
             res.status(500).json({
-                message:"Terjadi Kesalahan Internal pada server"
+                message: "Terjadi Kesalahan Internal pada server"
             })
         }
     }

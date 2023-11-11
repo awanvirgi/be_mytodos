@@ -66,7 +66,8 @@ module.exports = {
     createTodo: async (req, res) => {
         try {
             const user = req.user
-            const data = req.body
+            const data = req.body.data
+            console.log(data)
             const task = await Todo.create({ task: data.task, user_id: user.id })
             if (!task) return res.status(500).json({
                 message: "Todos tidak berhasil dibuat"
@@ -114,7 +115,7 @@ module.exports = {
     editTodo: async (req, res) => {
         try {
             const id = req.params.id
-            const data = req.body
+            const data = req.body.data
             await Todo.update({ task: data.task }, {
                 where: {
                     id: id
